@@ -6,13 +6,17 @@ import User from '../user/user.model';
 import { ILoginData, ILoginResponse } from './auth.interface';
 import { jwtHelpers } from '../../../helper/jwtHelper';
 import { Secret } from 'jsonwebtoken';
+import { generateUserId } from '../user/user.utils';
 
 const registerUser = async (payload: IUser): Promise<IUser> => {
+  const id = await generateUserId();
+  payload.id = id;
+  console.log(payload);
   const newUser = await User.create(payload);
   return newUser;
 };
-const loginUser = async (payload: ILoginData):Promise<ILoginResponse> => {
-  const isUserExist:any =await User.findOne({ email:payload.email });
+const loginUser = async (payload: ILoginData): Promise<ILoginResponse> => {
+  const isUserExist: any = await User.findOne({ email: payload.email });
 
   if (
     isUserExist.password &&
@@ -28,7 +32,7 @@ const loginUser = async (payload: ILoginData):Promise<ILoginResponse> => {
   );
 
   return {
-   token: accessToken,
+    token: accessToken,
   };
 };
 
