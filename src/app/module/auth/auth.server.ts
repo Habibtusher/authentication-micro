@@ -11,7 +11,7 @@ import { generateUserId } from '../user/user.utils';
 const registerUser = async (payload: IUser): Promise<IUser> => {
   const id = await generateUserId();
   payload.id = id;
-  console.log(payload);
+  console.log(id);
   const newUser = await User.create(payload);
   return newUser;
 };
