@@ -7,12 +7,16 @@ import { ILoginData, ILoginResponse } from './auth.interface';
 import { jwtHelpers } from '../../../helper/jwtHelper';
 import { Secret } from 'jsonwebtoken';
 import { generateUserId } from '../user/user.utils';
+import { RedisClient } from '../../../shared/redis';
 
 const registerUser = async (payload: IUser): Promise<IUser> => {
   const id = await generateUserId();
   payload.id = id;
   console.log(id);
   const newUser = await User.create(payload);
+  if (newUser) {
+    await RedisClient.publish('user.created', JSON.stringify(newUser));
+  }
   return newUser;
 };
 const loginUser = async (payload: ILoginData): Promise<ILoginResponse> => {

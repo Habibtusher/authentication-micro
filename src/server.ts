@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import app from './app';
 import config from './config';
 import { Server } from 'http';
+import { RedisClient } from './shared/redis';
 
 let server: Server;
 process.on('uncaughtException', err => {
@@ -11,11 +12,12 @@ process.on('uncaughtException', err => {
 
 async function main() {
   try {
+    await RedisClient.connect()
     await mongoose.connect(config.database_url as string);
 
     console.log('db connected');
     server = app.listen(config.port, () => {
-      console.log(`Example app listening on port ${config.port}`);
+      console.log(`Authentication app listening on port ${config.port}`);
     });
   } catch (error) {
     console.log('faield to connect');

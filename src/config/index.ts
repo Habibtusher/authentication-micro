@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import path from 'path';
+import { preprocess } from 'zod';
 dotenv.config({ path: path.join(process.cwd(), '.env') });
 
 export default {
@@ -11,6 +12,9 @@ export default {
   jwt: {
     secret: process.env.JWT_SECRET,
     expires_in: process.env.JWT_EXIRES_IN,
-   
   },
-}
+  redis: {
+    url: process.env.REDIS_URL,
+    expires_in: process.env.REDIS_TOKEN_EXPIRES_IN
+  },
+};
